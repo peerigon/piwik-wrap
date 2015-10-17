@@ -1,7 +1,7 @@
 "use strict";
 
 import expect from "unexpected";
-import * as DOM from "../DOM";
+import * as DOM from "../helpers/DOM";
 
 import injectScript from "../../src/lib/injectScript";
 

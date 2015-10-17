@@ -5,7 +5,11 @@ import express from "express";
 
 let server;
 
-export const start = (port, done) => {
+export const port = 3033;
+
+export const url = `http://localhost:${port}`;
+
+export const start = (done) => {
     server = express();
     server.get("/test", (req, res) => res.end("Test Server"));
     server.get("*", (req, res) => res.status(404).send("Not Found"));
@@ -13,6 +17,4 @@ export const start = (port, done) => {
     server = server.listen(port, done);
 };
 
-export const stop = (done) => {
-    server.close(done);
-};
+export const stop = (done) => server.close(done);

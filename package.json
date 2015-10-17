@@ -2,10 +2,10 @@
   "name": "piwik-client",
   "version": "0.0.1",
   "description": "An easy to use wrapper for the piwik-client.",
-  "main": "piwik-client.js",
+  "main": "PiwikClient.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register --recursive",
-    "watch-test": "mocha ./test/**/*.test.js --compilers js:babel/register --watch --growl ",
+    "test": "mocha ./test/*.test.js ./test/**/*.test.js --compilers js:babel/register",
+    "watch-test": "mocha ./test/*.test.js ./test/**/*.test.js --compilers js:babel/register --watch --growl ",
     "build": "babel ./src/piwik-client.js -o ./piwik-client.js"
   },
   "keywords": [
