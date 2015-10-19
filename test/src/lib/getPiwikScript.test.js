@@ -1,10 +1,10 @@
 "use strict";
 
 import expect from "unexpected";
-import * as DOM from "../helpers/DOM";
-import * as AssetsServer from "../helpers/AssetsServer";
+import * as DOM from "../../helpers/DOM";
+import * as AssetsServer from "../../helpers/AssetsServer";
 
-import getPiwikScript from "../../src/lib/getPiwikScript";
+import getPiwikScript from "../../../src/lib/getPiwikScript";
 
 describe("getPiwikScript", () => {
     let script;
@@ -13,7 +13,7 @@ describe("getPiwikScript", () => {
 
     describe("script properties:", () => {
 
-        before(() => script = getPiwikScript(AssetsServer.url, () => {}, () => {}));
+        before(() => script = getPiwikScript(AssetsServer.piwikScriptUrl, () => {}, () => {}));
 
         describe("type", () => {
             it("should have a property type with value \"text/javascript\"", () => {
@@ -43,7 +43,7 @@ describe("getPiwikScript", () => {
 
         describe("onload", () => {
             it("should execute given callback \"onload\"", (done) => {
-                document.body.appendChild(getPiwikScript(AssetsServer.url, done, done));
+                document.body.appendChild(getPiwikScript(AssetsServer.piwikScriptUrl, done, done));
             });
         });
 
@@ -51,7 +51,7 @@ describe("getPiwikScript", () => {
             it("should execute given callback \"onerror\" and pass an instance of URIError", (done) => {
                 document.body.appendChild(
                     getPiwikScript(
-                        AssetsServer.url.replace(`:${AssetsServer.port}`, ""),
+                        AssetsServer.piwikScriptUrl.replace(`:${AssetsServer.port}`, ""),
                         () => done(new Error("Test Failed!")),
                         (err) => {
                             expect(err, "to be a", URIError);

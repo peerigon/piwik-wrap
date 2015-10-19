@@ -1,25 +1,29 @@
 "use strict";
 
-import { resolve as urlResolve } from "url";
-
+/**
+ *
+ * @param {String} url - absolute url to Piwik-script
+ * @param {Function} onLoad
+ * @param {function(Error|null)} onError
+ * @returns {Node}
+ */
 const getPiwikScript = (url, onLoad, onError) => {
     const script = document.createElement("script");
-    const scriptUrl = urlResolve(url, "piwik.js");
 
     const _onLoad = () => {
-        onLoad.call(this);
+        onLoad();
         script.onload = script.onreadystatechange = null;
         script.onerror = null;
     };
 
     const _onError = () => {
-        onError(new URIError(`Failed to load ${scriptUrl}.`));
+        onError(new URIError(`Failed to load ${url}.`) || null);
         script.onload = script.onreadystatechange = null;
         script.onerror = null;
     };
 
     script.type = "text/javascript";
-    script.src = scriptUrl;
+    script.src = url;
     script.defer = true;
     script.async = true;
     script.onload = script.onreadystatechange = _onLoad;

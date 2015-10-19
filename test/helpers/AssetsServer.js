@@ -7,13 +7,14 @@ let server;
 
 export const port = 3033;
 
-export const url = `http://localhost:${port}`;
+export const host = `http://127.0.0.1:${port}`;
+
+export const piwikScriptUrl = `${host}/assets/piwik.js`;;
 
 export const start = (done) => {
     server = express();
-    server.get("/test", (req, res) => res.end("Test Server"));
+    server.use("/assets", express.static(path.resolve(__dirname, "..", "assets")));
     server.get("*", (req, res) => res.status(404).send("Not Found"));
-    server.get("/piwik.js", express.static(path.resolve(__dirname, "..", "assets/piwik.js")));
     server = server.listen(port, done);
 };
 

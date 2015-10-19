@@ -1,5 +1,3 @@
-"use strict";
-
 /*!
  * Piwik - free/libre analytics platform
  *

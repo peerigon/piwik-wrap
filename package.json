@@ -4,8 +4,8 @@
   "description": "An easy to use wrapper for the piwik-client.",
   "main": "PiwikClient.js",
   "scripts": {
-    "test": "mocha ./test/*.test.js ./test/**/*.test.js --compilers js:babel/register",
-    "watch-test": "mocha ./test/*.test.js ./test/**/*.test.js --compilers js:babel/register --watch --growl ",
+    "test": "mocha ./test/src --recursive --compilers js:./babel/register",
+    "watch-test": "mocha ./test/src --recursive --compilers js:babel/register --watch --growl",
     "build": "babel ./src/piwik-client.js -o ./piwik-client.js"
   },
   "keywords": [
@@ -20,6 +20,7 @@
     "babel": "^5.8.23"
   },
   "devDependencies": {
+    "babel-plugin-rewire": "^0.1.22",
     "express": "^4.13.3",
     "jsdom": "^6.5.1",
     "mocha": "^2.3.3",
