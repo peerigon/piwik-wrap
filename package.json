@@ -6,8 +6,8 @@
     "scripts": {
         "test": "mocha ./test/src --recursive --compilers js:./babel/register",
         "watch-test": "mocha ./test/src --recursive --compilers js:babel/register --watch --growl",
-        "build": "babel ./src/Piwik.js -o ./build/Piwik.js",
-        "prepublish": "babel ./src/Piwik.js -o ./build/Piwik.js"
+        "build": "babel ./src --out-dir ./build",
+        "postinstall": "babel ./src --out-dir ./build"
     },
     "keywords": [
         "piwik",
