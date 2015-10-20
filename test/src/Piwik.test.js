@@ -51,6 +51,18 @@ describe("Piwik", () => {
                 }
             });
 
+            it("it should return a Promise if a tracker function was called", (done) => {
+                Piwik
+                    .trackEvent("category", "action")
+                    .then(() => Piwik.trackPageView())
+                    .then(() => Piwik.trackSiteSearch("keyword"))
+                    .then(() => Piwik.trackGoal("trackGoal"))
+                    .then(() => Piwik.trackLink("url", "linkType"))
+                    // ... and so on
+                    .then(() => done())
+                    .catch((err) => done(err));
+            });
+
             after((done) => AssetsServer.stop(done));
         });
     });

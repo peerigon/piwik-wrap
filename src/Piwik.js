@@ -14,6 +14,8 @@ const Piwik = {
 
     Piwik: null,
 
+    Tracker: null,
+
     init(url, siteId) {
         this.url = url;
         this.siteId = siteId;
@@ -24,7 +26,8 @@ const Piwik = {
         this.p = new Promise((resolve, reject) => injectScript(getPiwikScript(this.url, resolve, reject)));
         this.p.then(this._checkPiwikInitialization.bind(this));
         this.p.then(this._removePiwikFromWindow.bind(this));
-        this.p.then(this._swallowPiwikMethods.bind(this));
+        this.p.then(this._init.bind(this));
+        this.p.then(this._rewireTrackerFunctions.bind(this));
 
         return this.p;
     },
@@ -40,14 +43,13 @@ const Piwik = {
         window.Piwik = undefined;
     },
 
-    _swallowPiwikMethods() {
-        const tracker = this.Piwik.getTracker(this.url, this.siteId);
-        const self = this;
+    _init() {
+        this.Tracker = this.Piwik.getTracker(this.url, this.siteId);
+    },
 
-        for (let methodName in tracker) {
-            self[methodName] = (...args) => {
-                return self.p
-            }
+    _rewireTrackerFunctions() {
+        for (let fn in this.Tracker) {
+            this[fn] = (...args) => this.p.then(() => this.Tracker[fn].apply(this.Tracker, args));
         }
     }
 
