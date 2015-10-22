@@ -43,7 +43,7 @@ const Piwik = {
         const hasFn = typeof this[fn] === "function";
 
         if (loadScriptCalled && hasFn) {
-            this[fn].apply(this.Tracker, ...args);
+            this[fn].call(this.Tracker, ...args);
         } else {
             this.Queue.push({fn: fn, args: args});
         }
@@ -90,7 +90,7 @@ const Piwik = {
     _execQueue() {
         this.Queue.forEach((fnArgs) => {
             const { fn, args } = fnArgs;
-            this.queue(fn, args);
+            this.queue(fn, ...args);
         }, this);
 
         this.Queue = [];
