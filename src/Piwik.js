@@ -16,11 +16,14 @@ const Piwik = {
 
     Tracker: null,
 
-    _queue: [],
+    Queue: [],
 
     init(url, siteId) {
+        this.restore();
+
         this.url = url;
         this.siteId = siteId;
+
         return this;
     },
 
@@ -28,19 +31,41 @@ const Piwik = {
         this.p = new Promise((resolve, reject) => injectScript(getPiwikScript(this.url, resolve, reject)));
         this.p.then(this._checkPiwikInitialization.bind(this));
         this.p.then(this._removePiwikFromWindow.bind(this));
-        this.p.then(this._init.bind(this));
+        this.p.then(this._getTracker.bind(this));
         this.p.then(this._rewireTrackerFunctions.bind(this));
+        this.p.then(() => console.log("And now exec Queue:"));
         this.p.then(this._execQueue.bind(this));
+        this.p.then(() => console.log("loadScript done"));
 
         return this.p;
     },
 
-    exec(fn, ...args) {
-        if (typeof this[fn] === "function") {
-            this.p.then(() => this[fn].call(this.Tracker, ...args));
+    queue(fn, ...args) {
+        const loadScriptCalled = this.p instanceof Promise;
+        const hasFn = typeof this[fn] === "function";
+
+        if (loadScriptCalled && hasFn) {
+            this.p.then(() => {
+                this[fn].call(this.Tracker, ...args);
+            });
         } else {
-            this.queue.push({fn: fn, args: args})
+            this.Queue.push({fn: fn, args: args});
         }
+
+        return this;
+    },
+
+    restore() {
+        for (let fn in this.Tracker) {
+            if (this[fn]) delete this[fn];
+        }
+
+        this.p = null;
+        this.url = null;
+        this.siteId = null;
+        this.Piwik = null;
+        this.Tracker = null;
+        this.Queue = [];
 
         return this;
     },
@@ -56,7 +81,7 @@ const Piwik = {
         window.Piwik = undefined;
     },
 
-    _init() {
+    _getTracker() {
         this.Tracker = this.Piwik.getTracker(this.url, this.siteId);
     },
 
@@ -67,9 +92,12 @@ const Piwik = {
     },
 
     _execQueue() {
-        this._queue.forEach((fnArgs) => {
-           this.exec(fnArgs.fn, ...fnArgs.args);
-        });
+        this.Queue.forEach((fnArgs) => {
+            const { fn, args } = fnArgs;
+            this.queue(fn, args);
+        }, this);
+
+        this.Queue = [];
     }
 
 };

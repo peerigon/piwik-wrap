@@ -64,38 +64,42 @@ describe("Piwik", () => {
                     .catch((err) => done(err));
             });
 
+            after(() => Piwik.restore());
             after((done) => AssetsServer.stop(done));
         });
 
-        describe(".exec()", () => {
-            before((done) => AssetsServer.start(done));
+        describe(".queue()", () => {
 
-            it("should execute given function with passed arguments when Piwik has been initialized", (done) => {
+            before((done) => AssetsServer.start(done));
+            before(() => Piwik.init(AssetsServer.piwikScriptUrl, siteId));
+
+            it("should execute given function with passed arguments when Piwik had been loaded", (done) => {
                 const args = [1, 2, 3];
+
+                Piwik
+                    .queue("trackPageView")
+                    .queue("trackSiteSearch", "keyword");
+
+                Piwik
+                    .queue("trackGoal", "trackGoal")
+                    .queue("trackLink", "url", "linkType");
+
+                Piwik.queue("spy", ...args);
 
                 Piwik.done = done;
                 Piwik.spy = sinon.spy();
 
                 Piwik
-                    .exec("trackPageView")
-                    .exec("trackSiteSearch", "keyword");
-
-                Piwik
-                    .exec("trackGoal", "trackGoal")
-                    .exec("trackLink", "url", "linkType");
-
-                Piwik.exec("spy", ...args);
-
-                Piwik
                     .loadScript()
                     .then(() => {
-                        expect(Piwik.spy.calledOnce, "to be", true);
+                        expect(Piwik.spy.callCount, "to be", 1);
                         expect(Piwik.spy.getCall(0).args, "to equal", args);
                     })
-                    .then(() => Piwik.exec("done"))
+                    .then(() => Piwik.queue("done"))
                     .catch((err) => done(err));
             });
 
+            after(() => Piwik.restore());
             after((done) => AssetsServer.stop(done));
         });
     });
