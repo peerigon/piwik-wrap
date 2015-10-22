@@ -1,6 +1,7 @@
 "use strict";
 
 import expect from "unexpected";
+import sinon from "sinon";
 import * as DOM from "./../helpers/DOM";
 import * as AssetsServer from "./../helpers/AssetsServer";
 import { getVirtualConsole } from "jsdom";
@@ -60,6 +61,38 @@ describe("Piwik", () => {
                     .then(() => Piwik.trackLink("url", "linkType"))
                     // ... and so on
                     .then(() => done())
+                    .catch((err) => done(err));
+            });
+
+            after((done) => AssetsServer.stop(done));
+        });
+
+        describe(".exec()", () => {
+            before((done) => AssetsServer.start(done));
+
+            it("should execute given function with passed arguments when Piwik has been initialized", (done) => {
+                const args = [1, 2, 3];
+
+                Piwik.done = done;
+                Piwik.spy = sinon.spy();
+
+                Piwik
+                    .exec("trackPageView")
+                    .exec("trackSiteSearch", "keyword");
+
+                Piwik
+                    .exec("trackGoal", "trackGoal")
+                    .exec("trackLink", "url", "linkType");
+
+                Piwik.exec("spy", ...args);
+
+                Piwik
+                    .loadScript()
+                    .then(() => {
+                        expect(Piwik.spy.calledOnce, "to be", true);
+                        expect(Piwik.spy.getCall(0).args, "to equal", args);
+                    })
+                    .then(() => Piwik.exec("done"))
                     .catch((err) => done(err));
             });
 

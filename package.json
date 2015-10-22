@@ -1,29 +1,30 @@
 {
-    "name": "piwik-client",
-    "version": "0.0.2",
-    "description": "An easy to use wrapper for the piwik-client.",
-    "main": "build/Piwik.js",
-    "scripts": {
-        "test": "mocha ./test/src --recursive --compilers js:./babel/register",
-        "watch-test": "mocha ./test/src --recursive --compilers js:babel/register --watch --growl",
-        "build": "babel ./src --out-dir ./build",
-        "postinstall": "babel ./src --out-dir ./build"
-    },
-    "keywords": [
-        "piwik",
-        "client",
-        "browser",
-        "tracking"
-    ],
-    "author": "Paul Torka",
-    "license": "ISC",
-    "dependencies": {
-        "babel": "^5.8.23"
-    },
-    "devDependencies": {
-        "express": "^4.13.3",
-        "jsdom": "^6.5.1",
-        "mocha": "^2.3.3",
-        "unexpected": "^10.0.1"
-    }
+  "name": "piwik-client",
+  "version": "0.0.2",
+  "description": "An easy to use wrapper for the piwik-client.",
+  "main": "build/Piwik.js",
+  "scripts": {
+    "test": "mocha ./test/src --recursive --compilers js:./babel/register",
+    "watch-test": "mocha ./test/src --recursive --compilers js:babel/register --watch --growl",
+    "build": "babel ./src --out-dir ./build",
+    "postinstall": "babel ./src --out-dir ./build"
+  },
+  "keywords": [
+    "piwik",
+    "client",
+    "browser",
+    "tracking"
+  ],
+  "author": "Paul Torka",
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^5.8.23"
+  },
+  "devDependencies": {
+    "express": "^4.13.3",
+    "jsdom": "^6.5.1",
+    "mocha": "^2.3.3",
+    "sinon": "^1.17.2",
+    "unexpected": "^10.0.1"
+  }
 }

@@ -16,6 +16,8 @@ const Piwik = {
 
     Tracker: null,
 
+    _queue: [],
+
     init(url, siteId) {
         this.url = url;
         this.siteId = siteId;
@@ -28,8 +30,19 @@ const Piwik = {
         this.p.then(this._removePiwikFromWindow.bind(this));
         this.p.then(this._init.bind(this));
         this.p.then(this._rewireTrackerFunctions.bind(this));
+        this.p.then(this._execQueue.bind(this));
 
         return this.p;
+    },
+
+    exec(fn, ...args) {
+        if (typeof this[fn] === "function") {
+            this.p.then(() => this[fn].call(this.Tracker, ...args));
+        } else {
+            this.queue.push({fn: fn, args: args})
+        }
+
+        return this;
     },
 
     _checkPiwikInitialization() {
@@ -51,6 +64,12 @@ const Piwik = {
         for (let fn in this.Tracker) {
             this[fn] = (...args) => this.p.then(() => this.Tracker[fn].apply(this.Tracker, args));
         }
+    },
+
+    _execQueue() {
+        this._queue.forEach((fnArgs) => {
+           this.exec(fnArgs.fn, ...fnArgs.args);
+        });
     }
 
 };
