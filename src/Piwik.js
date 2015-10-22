@@ -33,9 +33,7 @@ const Piwik = {
         this.p.then(this._removePiwikFromWindow.bind(this));
         this.p.then(this._getTracker.bind(this));
         this.p.then(this._rewireTrackerFunctions.bind(this));
-        this.p.then(() => console.log("And now exec Queue:"));
         this.p.then(this._execQueue.bind(this));
-        this.p.then(() => console.log("loadScript done"));
 
         return this.p;
     },
@@ -45,9 +43,7 @@ const Piwik = {
         const hasFn = typeof this[fn] === "function";
 
         if (loadScriptCalled && hasFn) {
-            this.p.then(() => {
-                this[fn].call(this.Tracker, ...args);
-            });
+            this[fn].apply(this.Tracker, ...args);
         } else {
             this.Queue.push({fn: fn, args: args});
         }

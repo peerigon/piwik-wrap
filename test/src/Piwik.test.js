@@ -86,9 +86,6 @@ describe("Piwik", () => {
 
                 Piwik.queue("spy", ...args);
 
-                Piwik.done = done;
-                Piwik.spy = sinon.spy();
-
                 Piwik
                     .loadScript()
                     .then(() => {
@@ -97,6 +94,9 @@ describe("Piwik", () => {
                     })
                     .then(() => Piwik.queue("done"))
                     .catch((err) => done(err));
+
+                Piwik.done = done;
+                Piwik.spy = sinon.spy();
             });
 
             after(() => Piwik.restore());
