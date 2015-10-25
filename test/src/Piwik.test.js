@@ -22,7 +22,7 @@ describe("Piwik", () => {
 
     describe("init", () => {
         it("should return a reference to itself", () => {
-            expect(Piwik.init(AssetsServer.piwikScriptUrl, siteId), "to equal", Piwik);
+            expect(Piwik.init(AssetsServer.host, siteId), "to equal", Piwik);
         });
 
         describe(".loadScript()", () => {
@@ -71,7 +71,7 @@ describe("Piwik", () => {
         describe(".queue()", () => {
 
             before((done) => AssetsServer.start(done));
-            before(() => Piwik.init(AssetsServer.piwikScriptUrl, siteId));
+            before(() => Piwik.init(AssetsServer.host, siteId));
 
             it("should execute given function with passed arguments when Piwik had been loaded", (done) => {
                 const args = [1, 2, 3];

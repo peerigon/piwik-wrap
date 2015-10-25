@@ -10,6 +10,10 @@ const Piwik = {
 
     url: null,
 
+    trackerURL: null,
+
+    scriptURL: null,
+
     siteId: null,
 
     Piwik: null,
@@ -22,13 +26,15 @@ const Piwik = {
         this.restore();
 
         this.url = url;
+        this.trackerURL = `${this.url}/piwik.php`;
+        this.scriptURL = `${this.url}/piwik.js`;
         this.siteId = siteId;
 
         return this;
     },
 
     loadScript() {
-        this.p = new Promise((resolve, reject) => injectScript(getPiwikScript(this.url, resolve, reject)));
+        this.p = new Promise((resolve, reject) => injectScript(getPiwikScript(this.scriptURL, resolve, reject)));
         this.p.then(this._checkPiwikInitialization.bind(this));
         this.p.then(this._removePiwikFromWindow.bind(this));
         this.p.then(this._getTracker.bind(this));
@@ -78,7 +84,7 @@ const Piwik = {
     },
 
     _getTracker() {
-        this.Tracker = this.Piwik.getTracker(this.url, this.siteId);
+        this.Tracker = this.Piwik.getTracker(this.trackerURL, this.siteId);
     },
 
     _rewireTrackerFunctions() {
