@@ -64,6 +64,16 @@ describe("Piwik", () => {
                     .catch((err) => done(err));
             });
 
+            it("should expose a Promise via `p`-property", (done) => {
+                Piwik.p
+                    .then(() => Piwik.setDocumentTitle("title"))
+                    .then(() => Piwik.setCustomUrl("http://custom.url"));
+
+                Piwik.p
+                    .then(() => done())
+                    .catch((err) => done(err));
+            });
+
             after(() => Piwik.restore());
             after((done) => AssetsServer.stop(done));
         });
@@ -76,6 +86,8 @@ describe("Piwik", () => {
             it("should execute given function with passed arguments when Piwik had been loaded", (done) => {
                 const args = [1, 2, 3];
 
+                Piwik.loadScript();
+
                 Piwik
                     .queue("trackPageView")
                     .queue("trackSiteSearch", "keyword");
@@ -84,19 +96,37 @@ describe("Piwik", () => {
                     .queue("trackGoal", "trackGoal")
                     .queue("trackLink", "url", "linkType");
 
-                Piwik.queue("spy", ...args);
-
                 Piwik
-                    .loadScript()
-                    .then(() => {
-                        expect(Piwik.spy.callCount, "to be", 1);
-                        expect(Piwik.spy.getCall(0).args, "to equal", args);
-                    })
-                    .then(() => Piwik.queue("done"))
-                    .catch((err) => done(err));
+                    .queue("spy", ...args)
+                    .queue("expect")
+                    .queue("done");
 
                 Piwik.done = done;
                 Piwik.spy = sinon.spy();
+                Piwik.expect = () => {
+                    expect(Piwik.spy.callCount, "to be", 1);
+                    expect(Piwik.spy.getCall(0).args, "to equal", args);
+                };
+            });
+
+            after(() => Piwik.restore());
+            after((done) => AssetsServer.stop(done));
+        });
+
+        describe(".p", () => {
+
+            before((done) => AssetsServer.start(done));
+            before(() => Piwik.init(AssetsServer.host, siteId));
+
+            it("should be possible to use Piwik Tracking Client methods through .then before .loadScript has finished", (done) => {
+                Piwik.loadScript();
+
+                Piwik.p
+                    .then(() => Piwik.setDocumentTitle("title"))
+                    .then(() => Piwik.setCustomUrl("http://another.custom.url"))
+                    .then(() => Piwik.trackPageView())
+                    .then(() => done())
+                    .catch((err) => err);
             });
 
             after(() => Piwik.restore());

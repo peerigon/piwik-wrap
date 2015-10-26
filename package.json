@@ -1,6 +1,6 @@
 {
     "name": "piwik-wrap",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "An easy to use wrapper for the piwik-client.",
     "main": "build/Piwik.js",
     "scripts": {

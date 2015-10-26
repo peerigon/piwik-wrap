@@ -39,20 +39,14 @@ const Piwik = {
         this.p.then(this._removePiwikFromWindow.bind(this));
         this.p.then(this._getTracker.bind(this));
         this.p.then(this._rewireTrackerFunctions.bind(this));
-        this.p.then(this._execQueue.bind(this));
 
         return this.p;
     },
 
     queue(fn, ...args) {
-        const loadScriptCalled = this.p instanceof Promise;
-        const hasFn = typeof this[fn] === "function";
-
-        if (loadScriptCalled && hasFn) {
+        this.p.then(() => {
             this[fn].call(this.Tracker, ...args);
-        } else {
-            this.Queue.push({fn: fn, args: args});
-        }
+        });
 
         return this;
     },
@@ -91,17 +85,7 @@ const Piwik = {
         for (let fn in this.Tracker) {
             this[fn] = (...args) => this.p.then(() => this.Tracker[fn].apply(this.Tracker, args));
         }
-    },
-
-    _execQueue() {
-        this.Queue.forEach((fnArgs) => {
-            const { fn, args } = fnArgs;
-            this.queue(fn, ...args);
-        }, this);
-
-        this.Queue = [];
     }
-
 };
 
 export default Piwik;

@@ -9,33 +9,131 @@ accessible through piwik-wrap.
 
 ## usage
 
+### .init()
+Before any other call Piwik must be initialized.
+
 ```javascript
-// page entry js/client bootstrapping
+// client bootstrapping 
 
 import Piwik from "piwik-wrap";
 
-// ... more imports and declarations
+// ... some other imports and declarations
 
-const siteId = 1;
+Piwik.init("https://my.piwik-instance.com", siteId);
 
-// ... some other client bootstrapping code
-
-// example 1
-
-Piwik
-    .init("https://my.piwik-instance.com", siteId);
-    .loadScript()
-    .then(() => Piwik.trackPageView());
-    
-// example 2    
-
-const link = document.querySelector("#trackThisLink");
-
-link.addEventListener("click", (e) => {
-  Piwik.queue("trackLinkUrl", e.target.getAttribute("href"), "linkType")
-}, false);
 
 ```
+
+### .loadScript()
+`.loadScript()` returns a `Promise` and initializes the `Promise`-chain.
+
+```javascript
+Piwik
+    .init("https://my.piwik-instance.com", siteId)
+    .loadScript()
+    .catch((err) => console.error(err));
+```
+
+### .then()
+
+```javascript
+// e.g. in a Controller
+
+var Piwik = require("piwik-wrap");
+
+// ...
+
+Piwik
+    .init("https://my.piwik-instance.com", siteId)
+    .loadScript()
+    .then(() => Piwik.setDocumentTitle(document.title)
+    .then(() => Piwik.setCustumUrl(document.location.href)) 
+    .then(() => Piwik.trackPageView());
+
+```
+
+### .queue()
+
+It is also possible to use `.queue()` if you are unfamiliar with Promises.
+
+```javascript
+// client bootstrapping
+
+import Piwik from "piwik-wrap";
+
+// ...
+
+Piwik.init("https://my.piwik-instance.com", siteId).loadScript();
+
+// app.js
+
+class App {
+
+    // ...
+    
+    changePage() {
+        Piwik
+            .queue("Piwik.setDocumentTitle", document.title)
+            .queue("setCustumUrl", "document.location.href")
+            .queue("trackPageView");
+    }
+    
+    // ...
+
+}
+
+
+```
+
+### .p
+
+```javascript
+// client bootstrapping
+
+import Piwik from "piwik-wrap";
+
+// ...
+
+Piwik.init("https://my.piwik-instance.com", siteId).loadScript();
+
+// PageA.js
+
+class Page {
+
+    // ...
+
+    initTracking() {
+        const link = document.querySelector("#trackThisLink");
+    
+        link.addEventListener("click", (e) => {
+            Piwik.p.then(() => Piwik.trackLink(e.target.getAttribute("href") "linkType");
+        }, false)
+    }
+    
+    // ...
+
+}
+
+// PageComponent.js
+
+import React from "react";
+import Piwik frtom "piwik-wrap";
+
+const PageComponent = React.createClass({
+    // ...
+    
+    componentDidMount() {
+        Piwik.p
+            .then(() => Piwik.setDocumentTitle(document.title))
+            .then(() => Piwik.setCustumUrl(document.location.href))
+            .then(() => Piwik.trackPageView());
+    }
+    
+    // ...
+
+});
+```
+
 
 ### Piwik-API-Reference
 
