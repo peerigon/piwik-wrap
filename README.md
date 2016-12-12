@@ -47,7 +47,7 @@ Piwik
     .init("https://my.piwik-instance.com", siteId)
     .loadScript()
     .then(() => Piwik.setDocumentTitle(document.title)
-    .then(() => Piwik.setCustumUrl(document.location.href)) 
+    .then(() => Piwik.setCustomUrl(document.location.href)) 
     .then(() => Piwik.trackPageView());
 
 ```
@@ -74,7 +74,7 @@ class App {
     changePage() {
         Piwik
             .queue("Piwik.setDocumentTitle", document.title)
-            .queue("setCustumUrl", "document.location.href")
+            .queue("setCustomUrl", "document.location.href")
             .queue("trackPageView");
     }
     
@@ -125,7 +125,7 @@ const PageComponent = React.createClass({
     componentDidMount() {
         Piwik.p
             .then(() => Piwik.setDocumentTitle(document.title))
-            .then(() => Piwik.setCustumUrl(document.location.href))
+            .then(() => Piwik.setCustomUrl(document.location.href))
             .then(() => Piwik.trackPageView());
     }
     
