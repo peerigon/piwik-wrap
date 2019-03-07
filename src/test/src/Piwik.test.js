@@ -5,7 +5,7 @@ import sinon from "sinon";
 import * as DOM from "./../helpers/DOM";
 import * as AssetsServer from "./../helpers/AssetsServer";
 import { getVirtualConsole } from "jsdom";
-import Piwik from "../../src/Piwik";
+import Piwik from "../../Piwik";
 
 describe("Piwik", () => {
     const siteId = 99;
@@ -22,6 +22,7 @@ describe("Piwik", () => {
 
     describe("init", () => {
         it("should return a reference to itself", () => {
+            console.log("hellooo");
             expect(Piwik.init(AssetsServer.host, siteId), "to equal", Piwik);
         });
 

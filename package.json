@@ -4,7 +4,7 @@
     "description": "An easy to use wrapper for the piwik-client.",
     "main": "build/Piwik.js",
     "scripts": {
-        "test": "mocha ./test/src --recursive --compilers js:babel/register",
+        "test": "mocha ./build/test/src",
         "watch-test": "mocha ./test/src --recursive --compilers js:babel/register --watch --growl",
         "build": "babel ./src --out-dir ./build",
         "prepublish": "babel ./src --out-dir ./build"
@@ -24,13 +24,16 @@
         "url": "https://github.com/peerigon/piwik-wrap.git"
     },
     "devDependencies": {
-        "babel": "^5.8.23"
-    },
-    "devDependencies": {
+        "@babel/cli": "^7.2.3",
+        "@babel/core": "^7.3.4",
+        "@babel/preset-env": "^7.3.4",
         "express": "^4.13.3",
         "jsdom": "^6.5.1",
         "mocha": "^2.3.3",
         "sinon": "^1.17.2",
         "unexpected": "^10.0.1"
+    },
+    "dependencies": {
+        "@babel/polyfill": "^7.2.5"
     }
 }
