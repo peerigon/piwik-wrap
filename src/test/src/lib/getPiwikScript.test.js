@@ -1,10 +1,9 @@
 "use strict";
 
-import expect from "unexpected";
 import * as DOM from "../../helpers/DOM";
 import * as AssetsServer from "../../helpers/AssetsServer";
 
-import getPiwikScript from "../../../src/lib/getPiwikScript";
+import getPiwikScript from "../../../lib/getPiwikScript";
 
 describe("getPiwikScript", () => {
     let script;

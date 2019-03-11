@@ -1,16 +1,14 @@
 "use strict";
 
-var _unexpected = _interopRequireDefault(require("unexpected"));
-
 var DOM = _interopRequireWildcard(require("../../helpers/DOM"));
 
 var AssetsServer = _interopRequireWildcard(require("../../helpers/AssetsServer"));
 
-var _getPiwikScript = _interopRequireDefault(require("../../../src/lib/getPiwikScript"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+var _getPiwikScript = _interopRequireDefault(require("../../../lib/getPiwikScript"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 describe("getPiwikScript", function () {
   var script;
@@ -23,20 +21,20 @@ describe("getPiwikScript", function () {
     });
     describe("type", function () {
       it("should have a property type with value \"text/javascript\"", function () {
-        (0, _unexpected.default)(script, "to have property", "type");
-        (0, _unexpected.default)(script.type, "to equal", "text/javascript");
+        expect(script, "to have property", "type");
+        expect(script.type, "to equal", "text/javascript");
       });
     });
     describe("defer", function () {
       it("should have a property defer set to true", function () {
-        (0, _unexpected.default)(script, "to have property", "defer");
-        (0, _unexpected.default)(script.defer, "to be truthy");
+        expect(script, "to have property", "defer");
+        expect(script.defer, "to be truthy");
       });
     });
     describe("async", function () {
       it("should have a property async set to true", function () {
-        (0, _unexpected.default)(script, "to have property", "async");
-        (0, _unexpected.default)(script.async, "to be truthy");
+        expect(script, "to have property", "async");
+        expect(script.async, "to be truthy");
       });
     });
   });
@@ -54,7 +52,7 @@ describe("getPiwikScript", function () {
         document.body.appendChild((0, _getPiwikScript.default)(AssetsServer.piwikScriptUrl.replace(":".concat(AssetsServer.port), ""), function () {
           return done(new Error("Test Failed!"));
         }, function (err) {
-          (0, _unexpected.default)(err, "to be a", URIError);
+          expect(err, "to be a", URIError);
           done();
         }));
       });

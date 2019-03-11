@@ -4,8 +4,7 @@
     "description": "An easy to use wrapper for the piwik-client.",
     "main": "build/Piwik.js",
     "scripts": {
-        "test": "mocha ./build/test/src",
-        "watch-test": "mocha ./test/src --recursive --compilers js:babel/register --watch --growl",
+        "test": "npm run build && jest ./build/test/src/Piwik.test.js",
         "build": "babel ./src --out-dir ./build",
         "prepublish": "babel ./src --out-dir ./build"
     },
@@ -27,13 +26,12 @@
         "@babel/cli": "^7.2.3",
         "@babel/core": "^7.3.4",
         "@babel/preset-env": "^7.3.4",
-        "express": "^4.13.3",
-        "jsdom": "^6.5.1",
-        "mocha": "^2.3.3",
-        "sinon": "^1.17.2",
-        "unexpected": "^10.0.1"
+        "@types/jest": "^24.0.11",
+        "babel-jest": "^24.3.1",
+        "express": "^4.13.3"
     },
     "dependencies": {
-        "@babel/polyfill": "^7.2.5"
+        "@babel/polyfill": "^7.2.5",
+        "jest": "^24.3.1"
     }
 }

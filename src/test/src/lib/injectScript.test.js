@@ -1,9 +1,9 @@
 "use strict";
 
-import expect from "unexpected";
 import * as DOM from "../../helpers/DOM";
 
-import injectScript from "../../../src/lib/injectScript";
+import injectScript from "../../../lib/injectScript";
+
 
 describe("injectScript", () => {
     let script, scripts;

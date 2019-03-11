@@ -1,68 +1,89 @@
-"use strict";
-
-var _unexpected = _interopRequireDefault(require("unexpected"));
-
-var _sinon = _interopRequireDefault(require("sinon"));
-
-var DOM = _interopRequireWildcard(require("./../helpers/DOM"));
+"use strict"; // import sinon from "sinon";
 
 var AssetsServer = _interopRequireWildcard(require("./../helpers/AssetsServer"));
 
-var _jsdom = require("jsdom");
-
 var _Piwik = _interopRequireDefault(require("../../Piwik"));
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+var _util = _interopRequireDefault(require("util"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 describe("Piwik", function () {
   var siteId = 99;
-  var scripts, virtualConsole;
-  before(function () {
-    return DOM.create();
-  });
-  before(function () {
-    virtualConsole = (0, _jsdom.getVirtualConsole)(window);
-    virtualConsole.on("jsdomError", function (err) {
-      throw err;
-    });
-  });
-  before(function () {
-    return document.body.appendChild(document.createElement("script"));
+  var scripts; // before(() => DOM.create());
+  // before(() => {
+  //     virtualConsole = getVirtualConsole(window);
+  //     virtualConsole.on("jsdomError", (err) => {
+  //         throw err;
+  //     });
+  // });
+  // before(() => document.body.appendChild(document.createElement("script")));
+
+  beforeAll(function () {
+    document.body.innerHTML = "\n            <div>\n                <p> Test Document </p>\n            </div>\n        ";
+    document.body.appendChild(document.createElement("script")); // console.log(JSON.stringify(document.body, null, 2));
   });
   describe("init", function () {
-    it("should return a reference to itself", function () {
+    it.only("should return a reference to itself", function () {
       console.log("hellooo");
-      (0, _unexpected.default)(_Piwik.default.init(AssetsServer.host, siteId), "to equal", _Piwik.default);
+      console.log(_util.default.inspect(document.body.innerHTML));
+      expect(_Piwik.default.init(AssetsServer.host, siteId)).toEqual(_Piwik.default);
     });
     describe(".loadScript()", function () {
-      before(function (done) {
-        return AssetsServer.start(done);
-      });
-      before(function (done) {
-        return _Piwik.default.loadScript().then(function () {
-          return done();
-        }).catch(function (err) {
-          return done(err);
-        });
-      });
+      // before((done) => AssetsServer.start(done));
+      // before((done) => Piwik.loadScript().then(() => done()).catch((err) => done(err)));
+      beforeAll(
+      /*#__PURE__*/
+      function () {
+        var _ref = _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee(done) {
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  AssetsServer.start(function () {
+                    _Piwik.default.loadScript().then(function () {
+                      return done();
+                    }).catch(function (err) {
+                      return done(err);
+                    });
+                  });
+
+                case 1:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee);
+        }));
+
+        return function (_x) {
+          return _ref.apply(this, arguments);
+        };
+      }());
       it("should have injected `piwik.js` before other scripts", function () {
         scripts = Array.from(document.getElementsByTagName("script"));
-        (0, _unexpected.default)(scripts, "to have length", 2);
-        (0, _unexpected.default)(scripts[0].src, "to equal", AssetsServer.piwikScriptUrl);
+        expect(scripts, "to have length", 2);
+        expect(scripts[0].src, "to equal", AssetsServer.piwikScriptUrl);
       });
       it("should have removed Piwik from global/window", function () {
-        (0, _unexpected.default)(window.Piwik, "to be undefined");
+        expect(window.Piwik).toBeUndefined();
       });
       it("should store a Reference to previously global Piwik-Object (duck typing test)", function () {
-        (0, _unexpected.default)(_Piwik.default.Piwik.getTracker, "to be a", "function");
-        (0, _unexpected.default)(_Piwik.default.Piwik.getAsyncTracker, "to be a", "function");
-        (0, _unexpected.default)(_Piwik.default.Piwik.addPlugin, "to be a", "function");
+        expect(_Piwik.default.Piwik.getTracker, "to be a", "function");
+        expect(_Piwik.default.Piwik.getAsyncTracker, "to be a", "function");
+        expect(_Piwik.default.Piwik.addPlugin, "to be a", "function");
       });
       it("should extend Piwik with all tracker-methods (duck typing test)", function () {
         for (var methodName in _Piwik.default.Piwik.getTracker()) {
-          (0, _unexpected.default)(_Piwik.default[methodName], "to be a", "function");
+          expect(_Piwik.default[methodName], "to be a", "function");
         }
       });
       it("it should return a Promise if a tracker function was called", function (done) {
@@ -120,11 +141,11 @@ describe("Piwik", function () {
         _Piwik.default.queue.apply(_Piwik.default, ["spy"].concat(args)).queue("expect").queue("done");
 
         _Piwik.default.done = done;
-        _Piwik.default.spy = _sinon.default.spy();
+        _Piwik.default.spy = sinon.spy();
 
         _Piwik.default.expect = function () {
-          (0, _unexpected.default)(_Piwik.default.spy.callCount, "to be", 1);
-          (0, _unexpected.default)(_Piwik.default.spy.getCall(0).args, "to equal", args);
+          expect(_Piwik.default.spy.callCount, "to be", 1);
+          expect(_Piwik.default.spy.getCall(0).args, "to equal", args);
         };
       });
       after(function () {

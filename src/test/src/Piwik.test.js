@@ -1,35 +1,52 @@
 "use strict";
 
-import expect from "unexpected";
-import sinon from "sinon";
-import * as DOM from "./../helpers/DOM";
+// import sinon from "sinon";
 import * as AssetsServer from "./../helpers/AssetsServer";
-import { getVirtualConsole } from "jsdom";
+// import { getVirtualConsole } from "jsdom";
 import Piwik from "../../Piwik";
+import util from "util";
+
 
 describe("Piwik", () => {
     const siteId = 99;
-    let scripts, virtualConsole;
+    let scripts;
 
-    before(() => DOM.create());
-    before(() => {
-        virtualConsole = getVirtualConsole(window);
-        virtualConsole.on("jsdomError", (err) => {
-            throw err;
-        });
+    // before(() => DOM.create());
+    // before(() => {
+    //     virtualConsole = getVirtualConsole(window);
+    //     virtualConsole.on("jsdomError", (err) => {
+    //         throw err;
+    //     });
+    // });
+    // before(() => document.body.appendChild(document.createElement("script")));
+
+    beforeAll(() => {
+        document.body.innerHTML = `
+            <div>
+                <p> Test Document </p>
+            </div>
+        `;
+        document.body.appendChild(document.createElement("script"));
+        // Kept here to show the trouble I had with console.logging the jsdom document. 
+        // console.log(util.inspect(document.body.innerHTML));
     });
-    before(() => document.body.appendChild(document.createElement("script")));
 
     describe("init", () => {
-        it("should return a reference to itself", () => {
+        it.only("should return a reference to itself", () => {
             console.log("hellooo");
-            expect(Piwik.init(AssetsServer.host, siteId), "to equal", Piwik);
+            expect(Piwik.init(AssetsServer.host, siteId)).toEqual(Piwik)
         });
 
         describe(".loadScript()", () => {
 
-            before((done) => AssetsServer.start(done));
-            before((done) => Piwik.loadScript().then(() => done()).catch((err) => done(err)));
+            // before((done) => AssetsServer.start(done));
+            // before((done) => Piwik.loadScript().then(() => done()).catch((err) => done(err)));
+
+            beforeAll(async(done) => {
+                AssetsServer.start(function(){
+                    Piwik.loadScript().then(() => done()).catch((err) => done(err));
+                });
+            });
 
             it("should have injected `piwik.js` before other scripts", () => {
                 scripts = Array.from(document.getElementsByTagName("script"));
@@ -38,7 +55,7 @@ describe("Piwik", () => {
             });
 
             it("should have removed Piwik from global/window", () => {
-               expect(window.Piwik, "to be undefined");
+               expect(window.Piwik).toBeUndefined();
             });
 
             it("should store a Reference to previously global Piwik-Object (duck typing test)", () => {
