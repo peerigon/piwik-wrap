@@ -5,6 +5,8 @@
     "main": "build/Piwik.js",
     "scripts": {
         "test": "npm run build && jest ./build/test/src/Piwik.test.js",
+        "test:watch": "npm run build && jest ./build/test/src/Piwik.test.js --watch",
+        "lint": "eslint ./src",
         "build": "babel ./src --out-dir ./build",
         "prepublish": "babel ./src --out-dir ./build"
     },
@@ -25,13 +27,17 @@
     "devDependencies": {
         "@babel/cli": "^7.2.3",
         "@babel/core": "^7.3.4",
+        "@babel/plugin-transform-runtime": "^7.3.4",
         "@babel/preset-env": "^7.3.4",
         "@types/jest": "^24.0.11",
         "babel-jest": "^24.3.1",
+        "eslint": "^5.15.1",
+        "eslint-config-peerigon": "^17.1.0",
         "express": "^4.13.3"
     },
     "dependencies": {
         "@babel/polyfill": "^7.2.5",
+        "@babel/runtime": "^7.3.4",
         "jest": "^24.3.1"
     }
 }

@@ -1,6 +1,8 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
 /*!
  * Piwik - free/libre analytics platform
@@ -12,7 +14,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
  * @license http://piwik.org/free-software/bsd/ BSD-3 Clause (also in js/LICENSE.txt)
  * @license magnet:?xt=urn:btih:c80d50af7d3db9be66a4d0a86db0286e4fd33292&dn=bsd-3-clause.txt BSD-3-Clause
  */
-if ((typeof JSON2 === "undefined" ? "undefined" : _typeof(JSON2)) !== "object") {
+if ((typeof JSON2 === "undefined" ? "undefined" : (0, _typeof2.default)(JSON2)) !== "object") {
   JSON2 = window.JSON || {};
 }
 
@@ -72,7 +74,7 @@ if ((typeof JSON2 === "undefined" ? "undefined" : _typeof(JSON2)) !== "object") 
         o,
         r = p[s];
 
-    if (r && _typeof(r) === "object") {
+    if (r && (0, _typeof2.default)(r) === "object") {
       r = l(r, s);
     }
 
@@ -80,7 +82,7 @@ if ((typeof JSON2 === "undefined" ? "undefined" : _typeof(JSON2)) !== "object") 
       r = h.call(p, s, r);
     }
 
-    switch (_typeof(r)) {
+    switch ((0, _typeof2.default)(r)) {
       case "string":
         return a(r);
 
@@ -111,7 +113,7 @@ if ((typeof JSON2 === "undefined" ? "undefined" : _typeof(JSON2)) !== "object") 
           return t;
         }
 
-        if (h && _typeof(h) === "object") {
+        if (h && (0, _typeof2.default)(h) === "object") {
           f = h.length;
 
           for (n = 0; n < f; n += 1) {
@@ -160,7 +162,7 @@ if ((typeof JSON2 === "undefined" ? "undefined" : _typeof(JSON2)) !== "object") 
 
       h = m;
 
-      if (m && typeof m !== "function" && (_typeof(m) !== "object" || typeof m.length !== "number")) {
+      if (m && typeof m !== "function" && ((0, _typeof2.default)(m) !== "object" || typeof m.length !== "number")) {
         throw new Error("JSON2.stringify");
       }
 
@@ -179,7 +181,7 @@ if ((typeof JSON2 === "undefined" ? "undefined" : _typeof(JSON2)) !== "object") 
             p,
             t = s[r];
 
-        if (t && _typeof(t) === "object") {
+        if (t && (0, _typeof2.default)(t) === "object") {
           for (q in t) {
             if (Object.prototype.hasOwnProperty.call(t, q)) {
               p = m(t, q);
@@ -217,11 +219,11 @@ if ((typeof JSON2 === "undefined" ? "undefined" : _typeof(JSON2)) !== "object") 
   }
 })();
 
-if ((typeof _paq === "undefined" ? "undefined" : _typeof(_paq)) !== "object") {
+if ((typeof _paq === "undefined" ? "undefined" : (0, _typeof2.default)(_paq)) !== "object") {
   _paq = [];
 }
 
-if ((typeof Piwik === "undefined" ? "undefined" : _typeof(Piwik)) !== "object") {
+if ((typeof Piwik === "undefined" ? "undefined" : (0, _typeof2.default)(Piwik)) !== "object") {
   Piwik = function () {
     var j,
         a = {},
@@ -240,8 +242,7 @@ if ((typeof Piwik === "undefined" ? "undefined" : _typeof(Piwik)) !== "object") 
         d;
 
     function w(X) {
-      var W = _typeof(X);
-
+      var W = (0, _typeof2.default)(X);
       return W !== "undefined";
     }
 
@@ -250,7 +251,7 @@ if ((typeof Piwik === "undefined" ? "undefined" : _typeof(Piwik)) !== "object") 
     }
 
     function J(W) {
-      return _typeof(W) === "object";
+      return (0, _typeof2.default)(W) === "object";
     }
 
     function n(W) {
@@ -866,7 +867,7 @@ if ((typeof Piwik === "undefined" ? "undefined" : _typeof(Piwik)) !== "object") 
           return;
         }
 
-        var Z = _typeof(aa.attributes[Y]);
+        var Z = (0, _typeof2.default)(aa.attributes[Y]);
 
         if ("undefined" === Z) {
           return;
@@ -905,8 +906,7 @@ if ((typeof Piwik === "undefined" ? "undefined" : _typeof(Piwik)) !== "object") 
         }
 
         if (Y && Y.attributes) {
-          var X = _typeof(Y.attributes[W]);
-
+          var X = (0, _typeof2.default)(Y.attributes[W]);
           return "undefined" !== X;
         }
 
@@ -2885,8 +2885,7 @@ if ((typeof Piwik === "undefined" ? "undefined" : _typeof(Piwik)) !== "object") 
 
       function aC(cp) {
         var cr = cp.which;
-
-        var cq = _typeof(cp.button);
+        var cq = (0, _typeof2.default)(cp.button);
 
         if (!cr && cq !== "undefined") {
           if (aM()) {
@@ -3698,7 +3697,7 @@ if (window && window.piwikAsyncInit) {
 }
 
 (function () {
-  var a = typeof AnalyticsTracker === "undefined" ? "undefined" : _typeof(AnalyticsTracker);
+  var a = typeof AnalyticsTracker === "undefined" ? "undefined" : (0, _typeof2.default)(AnalyticsTracker);
 
   if (a === "undefined") {
     AnalyticsTracker = Piwik;

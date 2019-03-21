@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -8,8 +10,6 @@ exports.stop = exports.start = exports.piwikScriptUrl = exports.host = exports.p
 var _path = _interopRequireDefault(require("path"));
 
 var _express = _interopRequireDefault(require("express"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var server;
 var port = 3033;

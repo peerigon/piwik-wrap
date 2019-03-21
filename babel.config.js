@@ -1,13 +1,11 @@
 const presets = [
-    [
-      "@babel/env"
-    ],
-  ];
-  
-  module.exports = { presets };
-  
+    ["@babel/env",],
+];
 
-  // babel.config.js
+module.exports = {presets};
+
+
+// babel.config.js
 // module.exports = {
 //   presets: [
 //     [
