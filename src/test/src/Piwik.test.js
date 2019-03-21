@@ -42,7 +42,7 @@ describe("Piwik", () => {
             });
 
             it("should have injected `piwik.js` before other scripts", () => {
-                console.log(util.inspect(document.body.innerHTML));
+                // console.log(util.inspect(document.body.innerHTML));
                 scripts = Array.from(document.getElementsByTagName("script"));
                 expect(scripts).toHaveLength(2);
                 expect(scripts[0].src).toEqual(AssetsServer.piwikScriptUrl);
