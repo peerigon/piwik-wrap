@@ -2,10 +2,10 @@
     "name": "piwik-wrap",
     "version": "0.0.6",
     "description": "An easy to use wrapper for the piwik-client.",
-    "main": "build/Piwik.js",
+    "main": "build/index.js",
     "scripts": {
-        "test": "npm run build && jest ./build/test/src/Piwik.test.js",
-        "test:watch": "npm run build && jest ./build/test/src/Piwik.test.js --watch",
+        "test": "npm run build && jest ./build/test/test.js",
+        "test:watch": "npm run build && jest ./build/test/test.js --watch",
         "lint": "eslint ./src",
         "build": "babel ./src --out-dir ./build",
         "prepublish": "babel ./src --out-dir ./build"
@@ -33,7 +33,6 @@
         "babel-jest": "^24.3.1",
         "eslint": "^5.15.1",
         "eslint-config-peerigon": "^17.1.0",
-        "express": "^4.13.3"
     },
     "dependencies": {
         "@babel/polyfill": "^7.2.5",
