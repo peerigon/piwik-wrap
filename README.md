@@ -4,34 +4,33 @@
 
 piwik-wrap wraps the Piwik [JavaScript Tracking Client](http://developer.piwik.org/api-reference/tracking-javascript) and
 provides an easy to use API for non- and Single Page Applications without polluting global namespace.
-All [JavaScript Tracking Client](http://developer.piwik.org/api-reference/tracking-javascript) methods are directly 
+All [JavaScript Tracking Client](http://developer.piwik.org/api-reference/tracking-javascript) methods are directly
 accessible through piwik-wrap.
 
 ## usage
 
 ### .init()
+
 Before any other call Piwik must be initialized.
 
 ```javascript
-// client bootstrapping 
+// client bootstrapping
 
 import Piwik from "piwik-wrap";
 
 // ... some other imports and declarations
 
 Piwik.init("https://my.piwik-instance.com", siteId);
-
-
 ```
 
 ### .loadScript()
+
 `.loadScript()` returns a `Promise` and initializes the `Promise`-chain.
 
 ```javascript
-Piwik
-    .init("https://my.piwik-instance.com", siteId)
-    .loadScript()
-    .catch((err) => console.error(err));
+Piwik.init("https://my.piwik-instance.com", siteId)
+  .loadScript()
+  .catch((err) => console.error(err));
 ```
 
 ### .then()
@@ -47,7 +46,7 @@ Piwik
     .init("https://my.piwik-instance.com", siteId)
     .loadScript()
     .then(() => Piwik.setDocumentTitle(document.title)
-    .then(() => Piwik.setCustomUrl(document.location.href)) 
+    .then(() => Piwik.setCustomUrl(document.location.href))
     .then(() => Piwik.trackPageView());
 
 ```
@@ -68,21 +67,16 @@ Piwik.init("https://my.piwik-instance.com", siteId).loadScript();
 // app.js
 
 class App {
+  // ...
 
-    // ...
-    
-    changePage() {
-        Piwik
-            .queue("Piwik.setDocumentTitle", document.title)
-            .queue("setCustomUrl", "document.location.href")
-            .queue("trackPageView");
-    }
-    
-    // ...
+  changePage() {
+    Piwik.queue("Piwik.setDocumentTitle", document.title)
+      .queue("setCustomUrl", "document.location.href")
+      .queue("trackPageView");
+  }
 
+  // ...
 }
-
-
 ```
 
 ### .p
@@ -104,12 +98,12 @@ class Page {
 
     initTracking() {
         const link = document.querySelector("#trackThisLink");
-    
+
         link.addEventListener("click", (e) => {
             Piwik.p.then(() => Piwik.trackLink(e.target.getAttribute("href") "linkType");
         }, false)
     }
-    
+
     // ...
 
 }
@@ -121,20 +115,25 @@ import Piwik frtom "piwik-wrap";
 
 const PageComponent = React.createClass({
     // ...
-    
+
     componentDidMount() {
         Piwik.p
             .then(() => Piwik.setDocumentTitle(document.title))
             .then(() => Piwik.setCustomUrl(document.location.href))
             .then(() => Piwik.trackPageView());
     }
-    
+
     // ...
 
 });
 ```
 
-
 ### Piwik-API-Reference
 
 Check: [JavaScript Tracking Client](http://developer.piwik.org/api-reference/tracking-javascript).
+
+---
+
+## Sponsors
+
+[<img src="https://assets.peerigon.com/peerigon/logo/peerigon-logo-flat-spinat.png" width="150" />](https://peerigon.com)
